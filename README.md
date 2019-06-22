@@ -1,13 +1,13 @@
 # antebellum
 a simple ron clone, and more
-### dependencies: ###
+## dependencies: ##
 * [GLFW](https://www.glfw.org "GLFW")
 * [GLEW](http://glew.sourceforge.net "GLEW")
 * [stb_image](https://github.com/nothings/stb/blob/master/stb_image.h "stb_image")
 * [glm](https://github.com/g-truc/glm "glm")
 * [imgui](https://github.com/ocornut/imgui "imgui")
 
-### instructions to get something drawn: ###
+## instructions to get something drawn: ##
 * create a texture object
 ```c++
 texture yourcooltexture(const char* path);
