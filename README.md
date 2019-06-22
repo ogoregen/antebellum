@@ -27,3 +27,4 @@ basic.setUmat4f("mvp", proj * view * model);
 yourcooltexture.bind();
 yourthing.display();
 ```
+_you do not need to create or edit shaders as the default ones created for our program seem to be sufficient_
