@@ -6,3 +6,18 @@ a simple ron clone, and more
 * [stb_image](https://github.com/nothings/stb/blob/master/stb_image.h "stb_image")
 * [glm](https://github.com/g-truc/glm "glm")
 * [imgui](https://github.com/ocornut/imgui "imgui")
+
+### instructions to get something drawn: ###
+* create a texture object
+```c++
+texture yourcooltexture(const char* path);
+```
+* create a thing object. specifying a count greater than 1 renders with instancing. you do not need to specify an array if your count is 1
+```c++
+thing yourthing(int width, int height, unsigned int count, glm::vec2 positions[]);
+```
+* in the game loop, bind your texture and call your thing's display function
+```c++
+yourcooltexture.bind();
+yourthing.display();
+```
