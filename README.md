@@ -12,7 +12,7 @@ a simple ron clone, and more
 ```c++
 texture yourcooltexture(const char* path);
 ```
-* create a thing object. specifying a count greater than 1 renders with instancing. you do not need to specify an array if your count is 1
+* create a thing object. specifying a count greater than 1 enables rendering with instancing. you do not need to specify an array if your count is 1
 ```c++
 thing yourthing(int width, int height, unsigned int count, glm::vec2 positions[]);
 ```
