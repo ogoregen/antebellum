@@ -14,6 +14,7 @@
 #include "imgui/imgui_impl_glfw_gl3.h"
 
 #include "graphics/shader.h"
+#include "graphics/texture.h"
 
 int irr1, irr2, width, height;
 double mouseX, mouseY;
@@ -54,6 +55,8 @@ static int initialize(){
 	glfwSwapInterval(1);
 	if(glewInit() != GLEW_OK) return -1;
 	std::cout << "Be positive, please. " << "Using " << glGetString(GL_VERSION) << std::endl;
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	ImGui::CreateContext();
 	ImGui_ImplGlfwGL3_Init(window, true);
@@ -79,11 +82,11 @@ glm::vec2 d[10000];
 int main(void){
 
 	int a = 0;
-	for(int i = 0; i < 100; i++){
+	for(int i = 0; i < 20; i++){
 
-		for(int j = 0; j < 100; j++){
+		for(int j = 0; j < 20; j++){
 
-			d[a] = ctoi(glm::vec2(i*70, j*70));
+			d[a] = ctoi(glm::vec2(i*50, j*50));
 			a++;
 		}
 	}
@@ -94,24 +97,7 @@ int main(void){
 	glm::mat4 proj = glm::ortho(0.0f, (float)width, (float)height, 0.0f);
 
 	shader basic("resources/shaders/basic_vs.shader", "resources/shaders/basic_fs.shader");
-
-	int w, h, channelcount;
-	unsigned char* image = stbi_load("resources/textures/low.png", &w, &h, &channelcount, 0);
-
-	unsigned int texture;
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	stbi_image_free(image);
+	texture texture("resources/textures/low.png");
 
 	unsigned int va, vb, vb2, eb;
 
@@ -132,7 +118,7 @@ int main(void){
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		glBindBuffer(GL_ARRAY_BUFFER, vb2);
-		glBufferData(GL_ARRAY_BUFFER, 10000 * sizeof(glm::vec2), &d[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, 400 * sizeof(glm::vec2), &d[0], GL_STATIC_DRAW);
 		glEnableVertexAttribArray(2);
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 		glVertexAttribDivisor(2, 1);
@@ -142,9 +128,9 @@ int main(void){
 
 		glfwGetCursorPos(window, &mouseX, &mouseY);
 		if(mouseX < 15) translation.x += 15;
-		else if(mouseX > w - 15) translation.x -= 15;
+		else if(mouseX > width - 15) translation.x -= 15;
 		if(mouseY < 15) translation.y += 15;
-		else if(mouseY > h - 15) translation.y -= 15;
+		else if(mouseY > height - 15) translation.y -= 15;
 		glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(translation.x, translation.y, 0));
 
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -153,22 +139,17 @@ int main(void){
 
 		basic.setUmat4f("mvp", proj * view);
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture);
+		texture.bind(0);
 
 		glBindVertexArray(va);
-		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 10000);
-
+		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 400);
 
 		ImGui_ImplGlfwGL3_NewFrame();
-
 		{
 			ImGui::Text("average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		}
-
 		ImGui::Render();
 		ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
-
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
