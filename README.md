@@ -16,8 +16,14 @@ texture yourcooltexture(const char* path);
 ```c++
 thing yourthing(int width, int height, unsigned int count, glm::vec2 positions[]);
 ```
-* in the game loop, bind your texture and call your thing's display function
+* in the game loop:
+  * create your model matrix with your position data
+  * pass the matrix to the shader multiplying by projection and view matrices
+  * bind your texture
+  * call your thing's display method
 ```c++
+glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(translation.x, translation.y, 0));
+basic.setUmat4f("mvp", proj * view * model);
 yourcooltexture.bind();
 yourthing.display();
 ```
