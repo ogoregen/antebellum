@@ -14,7 +14,7 @@ texture yourcooltexture(const char* path);
 ```
 * create a thing object. specifying a count greater than 1 enables rendering with instancing. you do not need to specify an array if your count is 1
 ```c++
-thing yourthing(int width, int height, unsigned int count, glm::vec2 positions[]);
+thing yourthing(float width, float height, unsigned int count, glm::vec2 positions[]);
 ```
 * in the game loop:
   * create your model matrix with your position data
