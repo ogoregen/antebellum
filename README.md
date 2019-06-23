@@ -4,6 +4,7 @@ a simple rts game, and more
 * [GLFW](https://www.glfw.org "GLFW")
 * [GLEW](http://glew.sourceforge.net "GLEW")
 * [stb_image](https://github.com/nothings/stb/blob/master/stb_image.h "stb_image")
+* [stb_perlin](https://github.com/nothings/stb/blob/master/stb_perlin.h "stb_perlin")
 * [glm](https://github.com/g-truc/glm "glm")
 * [imgui](https://github.com/ocornut/imgui "imgui")
 
