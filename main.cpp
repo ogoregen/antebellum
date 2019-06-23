@@ -16,6 +16,8 @@
 #include "graphics/shader.h"
 #include "graphics/texture.h"
 
+#include "thing.h"
+
 int irr1, irr2, width, height;
 double mouseX, mouseY;
 glm::vec2 translation(0, 0);
@@ -35,6 +37,29 @@ glm::vec2 itoc(glm::vec2 p){
 	i.x = (p.x + 2 * p.y) / 2;
 	i.y = (2 * p.y - p.x) / 2;
 	return i;
+}
+
+static void view(){
+
+	glfwGetCursorPos(window, &mouseX, &mouseY);
+	if(mouseX < 15) translation.x += 15;
+	else if(mouseX > width - 15) translation.x -= 15;
+	if(mouseY < 15) translation.y += 15;
+	else if(mouseY > height - 15) translation.y -= 15;
+
+	glClear(GL_COLOR_BUFFER_BIT);
+}
+
+static void hud(){
+
+	ImGui_ImplGlfwGL3_NewFrame();
+	{
+		ImGui::Text("average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	}
+	ImGui::Render();
+	ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
+	glfwSwapBuffers(window);
+	glfwPollEvents();
 }
 
 static int initialize(){
@@ -63,28 +88,14 @@ static int initialize(){
 	ImGui::StyleColorsDark();
 }
 
-float vertices[] = { //x, y, z, s, t
-
-	 0.0f,   50.0f, 0.0f, 1.0f, 1.0f,
-	 100.0f, 50.0f, 0.0f, 1.0f, 0.0f,
-   100.0f, 0.0f,  0.0f, 0.0f, 0.0f,
-	 0.0f,   0.0f,  0.0f, 0.0f, 1.0f
-};
-
-unsigned int indices[] = {
-
-	0, 1, 3,
-	1, 2 ,3
-};
-
-glm::vec2 d[10000];
-
 int main(void){
+	
+	glm::vec2 d[1600];
 
 	int a = 0;
-	for(int i = 0; i < 20; i++){
+	for(int i = 0; i < 40; i++){
 
-		for(int j = 0; j < 20; j++){
+		for(int j = 0; j < 40; j++){
 
 			d[a] = ctoi(glm::vec2(i*50, j*50));
 			a++;
@@ -97,62 +108,27 @@ int main(void){
 	glm::mat4 proj = glm::ortho(0.0f, (float)width, (float)height, 0.0f);
 
 	shader basic("resources/shaders/basic_vs.shader", "resources/shaders/basic_fs.shader");
-	texture texture("resources/textures/low.png");
+	texture texturea("resources/textures/low.png");
+	texture textureb("resources/textures/high.png");
+	thing ad(200, 100, 1600, d);
+	thing ad2(400, 200, 1);
 
-	unsigned int va, vb, vb2, eb;
-
-	glGenVertexArrays(1, &va);
-	glGenBuffers(1, &vb);
-	glGenBuffers(1, &vb2);
-	glGenBuffers(1, &eb);
-
-	glBindVertexArray(va);
-		glBindBuffer(GL_ARRAY_BUFFER, vb);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eb);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)( 3 *sizeof(float)));
-		glEnableVertexAttribArray(1);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-		glBindBuffer(GL_ARRAY_BUFFER, vb2);
-		glBufferData(GL_ARRAY_BUFFER, 400 * sizeof(glm::vec2), &d[0], GL_STATIC_DRAW);
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
-		glVertexAttribDivisor(2, 1);
-	glBindVertexArray(0);
+	basic.bind();
 
 	while(!glfwWindowShouldClose(window)){
 
-		glfwGetCursorPos(window, &mouseX, &mouseY);
-		if(mouseX < 15) translation.x += 15;
-		else if(mouseX > width - 15) translation.x -= 15;
-		if(mouseY < 15) translation.y += 15;
-		else if(mouseY > height - 15) translation.y -= 15;
+		view();
+
 		glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(translation.x, translation.y, 0));
-
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		basic.bind();
 
 		basic.setUmat4f("mvp", proj * view);
 
-		texture.bind(0);
+		texturea.bind();
+		ad.display();
 
-		glBindVertexArray(va);
-		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 400);
-
-		ImGui_ImplGlfwGL3_NewFrame();
-		{
-			ImGui::Text("average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		}
-		ImGui::Render();
-		ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
-		glfwSwapBuffers(window);
-		glfwPollEvents();
+		hud();
 	}
+
 	ImGui_ImplGlfwGL3_Shutdown();
 	ImGui::DestroyContext();
 	glfwTerminate();
