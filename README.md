@@ -1,5 +1,5 @@
 # antebellum
-a simple ron clone, and more
+a simple rts game, and more
 ## dependencies: ##
 * [GLFW](https://www.glfw.org "GLFW")
 * [GLEW](http://glew.sourceforge.net "GLEW")
