@@ -1,5 +1,5 @@
 # antebellum
-a simple rts game, and more
+a simple rts game, currently under developement
 ## dependencies: ##
 * [GLFW](https://www.glfw.org "GLFW")
 * [GLEW](http://glew.sourceforge.net "GLEW")
