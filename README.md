@@ -17,12 +17,12 @@ texture yourcooltexture(const char* path);
 ```c++
 thing yourthing(float width, float height);
 ```
-specifying a count enables rendering with instancing. you do not need to specify an array or count if you want to draw one object at a time
+specifying count enables rendering with instancing. you do not need to specify an array or count if you want to draw one object at a time
 ```c++
 thing yourthing(float width, float height, unsigned int count, glm::vec2 positions[]);
 ```
 * in the game loop:
-  * create your model matrix with your position data
+  * create a model matrix with your position data
   * pass the matrix to the shader multiplying by projection, scale and view matrices
   * bind your texture
   * call your thing's display method
