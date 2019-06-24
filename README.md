@@ -31,4 +31,4 @@ yourthing.display();
 _you do not need to create or edit shaders as the default ones created for our program are sufficient_
 
 #### download full vs project including libraries [here](http://catheart.xyz/antebellum.rar "source"). (don't forget to update source codes) ####
-#### collaborator: @perought ####
+#### collaborator: [@perought](https://github.com/perought "perought") ####
