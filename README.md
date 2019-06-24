@@ -14,13 +14,13 @@ a simple rts game, currently under developement
 texture yourcooltexture(const char* path);
 ```
 * create a thing object
-  ```c++
-  thing yourthing(float width, float height);
-  ```
-  specifying a count enables rendering with instancing. you do not need to specify an array or count if you want to draw one object at a   time
-  ```c++
-  thing yourthing(float width, float height, unsigned int count, glm::vec2 positions[]);
-  ```
+```c++
+thing yourthing(float width, float height);
+```
+specifying a count enables rendering with instancing. you do not need to specify an array or count if you want to draw one object at a time
+```c++
+thing yourthing(float width, float height, unsigned int count, glm::vec2 positions[]);
+```
 * in the game loop:
   * create your model matrix with your position data
   * pass the matrix to the shader multiplying by projection, scale and view matrices
