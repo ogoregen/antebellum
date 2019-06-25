@@ -17,7 +17,7 @@ texture yourcooltexture(const char* path);
 ```c++
 thing yourthing(float width, float height);
 ```
-call instance() specifying count ant array of position vectors to enable rendering with instancing. you do not need to do this if you are goint to draw your things one at a time
+call _instance()_ specifying count and array of position vectors to enable rendering with instancing. you do not need to do this if you are goint to draw your things one at a time
 ```c++
 yourthing.instance(unsigned int count, glm::vec2 positions[]);
 ```
