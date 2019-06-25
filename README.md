@@ -17,9 +17,9 @@ texture yourcooltexture(const char* path);
 ```c++
 thing yourthing(float width, float height);
 ```
-specifying count enables rendering with instancing. you do not need to specify an array or count if you want to draw one object at a time
+call instance() specifying count ant array of position vectors to enable rendering with instancing. you do not need to do this if you are goint to draw your things one at a time
 ```c++
-thing yourthing(float width, float height, unsigned int count, glm::vec2 positions[]);
+yourthing.instance(unsigned int count, glm::vec2 positions[]);
 ```
 * in the game loop:
   * create a model matrix with your position data
