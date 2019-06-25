@@ -11,7 +11,7 @@ a simple rts game, currently under developement
 ## instructions to get something drawn: ##
 * create a texture object
 ```c++
-texture yourcooltexture(const char* path);
+texture yourcooltexture(const char* filepath);
 ```
 * create a thing object
 ```c++
