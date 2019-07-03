@@ -29,7 +29,7 @@ void world::generate(){
 		xoff += 0.01;
 	}
 
-	next = new int* [worldsize]; //create map data array
+	next = new int* [worldsize];
 	for(int i = 0; i < worldsize; ++i) next[i] = new int[worldsize];
 
 	for(int i = 0; i < worldsize; i++){ 
