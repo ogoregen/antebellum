@@ -1,104 +1,96 @@
 
 #include "world.h"
 
-world::world(int worldsize, float seed_):
+world::world(int worldsize_, float seed_) :
 
-	lowtile("resources/textures/low.png"),
-	seatile("resources/textures/sea.png"),
-	sea(100, 50),
-	low(100, 50),
-	high(100, 50),
-	higher(100, 50),
-	seed(seed_)
-{
+	seed(seed_),
+	worldsize(worldsize_){
 
-	sea.offset = 5;
-	high.offset = -10;
-	higher.offset = -5;
+	for(int i = 0; i < tilecount; i++){
 
-	unsigned int s_count = 0;
-	unsigned int l_count = 0;
-	unsigned int h_count = 0;
-	unsigned int h2_count = 0;
+		things[0].offsetY = tileheight - textures[0].h / (textures[0].w / tilewidth);
+	}
+}
 
-	int** grid = new int* [worldsize];
+void world::generate(){
+
+	grid = new int* [worldsize]; //create map data array
 	for(int i = 0; i < worldsize; ++i) grid[i] = new int[worldsize];
 
 	double xoff = 0.0;
 	double yoff = 0.0;
-	for(int i = 0; i < worldsize; i++){
+	for(int i = 0; i < worldsize; i++){ //generate map
 
 		yoff = 0.0;
 		for(int j = 0; j < worldsize; j++){
 
-			grid[i][j] = (int) map(stb_perlin_noise3(xoff, yoff, seed, 0, 0, 0), 0, 1, 2, 5);
-			if(grid[i][j] == 1) s_count++;
-			else if(grid[i][j] == 4) h2_count++;
-			else if(grid[i][j] == 3) h_count++;
-			else l_count++;
-			yoff += 0.02;
+			grid[i][j] = (int)map(stb_perlin_noise3(xoff, yoff, seed, 0, 0, 0), 0, 1, 0, 4);
+			yoff += 0.01;
 		}
-		xoff += 0.02;
+		xoff += 0.01;
 	}
 
-	glm::vec2* ds = new glm::vec2[s_count];
-	glm::vec2* dl = new glm::vec2[l_count];
-	glm::vec2* dh = new glm::vec2[h_count];
-	glm::vec2* dh2 = new glm::vec2[h2_count];
+	next = new int* [worldsize]; //create map data array
+	for(int i = 0; i < worldsize; ++i) next[i] = new int[worldsize];
 
-	int a_ = 0;
-	int b_ = 0;
-	int c_ = 0;
-	int d_ = 0;
-
-	for(int i = 0; i < worldsize; i++){
+	for(int i = 0; i < worldsize; i++){ 
 
 		for(int j = 0; j < worldsize; j++){
-		
-			if(grid[i][j] == 1){
-				if(a_ < s_count){
 
-					ds[a_] = glm::vec2(ctoi(glm::vec2(i * 50, j * 50)).x, ctoi(glm::vec2(i * 50, j * 50)).y + sea.offset);
-					a_++;
-				}
-			}
-			else if(grid[i][j] == 3){
-				if(c_ < h_count){
+			if(grid[i][j] == 0){
 
-					dh[c_] = glm::vec2(ctoi(glm::vec2(i * 50, j * 50)).x, ctoi(glm::vec2(i * 50, j * 50)).y + high.offset);
-					c_++;
-				}
-			}
-			else if(grid[i][j] == 4){
-				if(d_ < h2_count){
-
-					dh2[d_] = glm::vec2(ctoi(glm::vec2(i * 50, j * 50)).x, ctoi(glm::vec2(i * 50, j * 50)).y + higher.offset);
-					d_++;
-				}
+				next[i][j] = (int)map(rand(), 0, RAND_MAX, 0, 3);
 			}
 			else{
-				if(b_ < l_count){
+			
+				next[i][j] = (int)map(rand(), 0, RAND_MAX, 3, 6);
+			} 
+		}
+	}
 
-					dl[b_] = ctoi(glm::vec2(i * 50, j * 50));
-					b_++;
-				}
+	grid = next;
+
+
+	unsigned int* counts = new unsigned int[tilecount];
+	for(int i = 0; i < tilecount; i++) counts[i] = 0;
+
+	for(int i = 0; i < worldsize; i++){ //count each tile type 
+
+		for(int j = 0; j < worldsize; j++){
+
+			counts[grid[i][j]]++;
+		}
+	}
+
+	glm::vec2** data = new glm::vec2*[tilecount];
+	for(int i = 0; i < tilecount; i++) data[i] = new glm::vec2[counts[i]];
+
+	int* iteration = new int[tilecount];
+	for(int i = 0; i < tilecount; i++) iteration[i] = 0;
+
+	for(int i = 0; i < worldsize; i++){ //fill the data arrays
+
+		for(int j = 0; j < worldsize; j++){
+
+			int c;
+			c = grid[i][j];
+
+			if(c >= 0 && iteration[c] < counts[c]){
+
+				data[c][iteration[c]] = glm::vec2(ctoi(glm::vec2(i * tileheight, j * tileheight)).x, ctoi(glm::vec2(i * tileheight, j * tileheight)).y + things[c].offsetY);
+				iteration[c]++;
 			}
 		}
 	}
 
-	sea.init(s_count, ds);
-	low.init(l_count, dl);
-	high.init(h_count, dh);
-	higher.init(h2_count, dh2);
+	for(int i = 0; i < tilecount; i++) things[i].instance(counts[i], data[i]); //pass the data arrays to shader
 }
 
 void world::display(){
 
-	seatile.bind();
-	sea.display();
+	for(int i = 0; i < tilecount; i++){
 
-	lowtile.bind();
-	low.display();
-	high.display();
-	higher.display();
+		textures[i].bind();
+		things[i].display();
+	}
 }
