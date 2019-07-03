@@ -1,4 +1,3 @@
-
 #include "world.h"
 
 world::world(int worldsize_, float seed_) :
