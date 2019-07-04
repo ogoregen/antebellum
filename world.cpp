@@ -1,3 +1,4 @@
+
 #include "world.h"
 
 world::world(int worldsize_, float seed_) :
@@ -5,9 +6,14 @@ world::world(int worldsize_, float seed_) :
 	seed(seed_),
 	worldsize(worldsize_){
 
-	for(int i = 0; i < tilecount; i++){
+	for(int i = 0; i < 3; i++){
 
-		things[0].offsetY = tileheight - textures[0].h / (textures[0].w / tilewidth);
+		things[i].offsetY = tileheight - textures[i].h / (textures[i].w / tilewidth);
+	}
+	things[3].offsetY = tileheight - textures[3].h / (textures[3].w / tilewidth);
+	for(int i = 4; i < 7; i++){
+
+		things[i].offsetY = tileheight - textures[i].h / (textures[i].w / tilewidth) + things[3].offsetY;
 	}
 }
 
@@ -42,7 +48,7 @@ void world::generate(){
 			}
 			else{
 			
-				next[i][j] = (int)map(rand(), 0, RAND_MAX, 3, 6);
+				next[i][j] = (int)map(rand(), 0, RAND_MAX, 4, 7);
 			} 
 		}
 	}
@@ -56,7 +62,8 @@ void world::generate(){
 	for(int i = 0; i < worldsize; i++){ //count each tile type 
 
 		for(int j = 0; j < worldsize; j++){
-
+			
+			if(grid[i][j] == 4 || grid[i][j] == 5 || grid[i][j] == 6) counts[3]++; //ground tile
 			counts[grid[i][j]]++;
 		}
 	}
@@ -79,6 +86,16 @@ void world::generate(){
 				data[c][iteration[c]] = glm::vec2(ctoi(glm::vec2(i * tileheight, j * tileheight)).x, ctoi(glm::vec2(i * tileheight, j * tileheight)).y + things[c].offsetY);
 				iteration[c]++;
 			}
+
+			if(c == 4 || c == 5 || c == 6){
+			
+				c = 3;
+				if(c >= 0 && iteration[c] < counts[c]){
+
+					data[c][iteration[c]] = glm::vec2(ctoi(glm::vec2(i * tileheight, j * tileheight)).x, ctoi(glm::vec2(i * tileheight, j * tileheight)).y + things[c].offsetY);
+					iteration[c]++;
+				}
+			} 	
 		}
 	}
 
