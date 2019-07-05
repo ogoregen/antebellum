@@ -1,5 +1,7 @@
 # antebellum
 a simple rts game, currently under developement
+## features: ##
+* procedurally generated map
 ## dependencies: ##
 * [GLFW](https://www.glfw.org "GLFW")
 * [GLEW](http://glew.sourceforge.net "GLEW")
