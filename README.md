@@ -39,7 +39,6 @@ yourthing.display();
 ```
 # #
 
-#### download full vs project including libraries [here](http://catheart.xyz/antebellum.rar "source"). (don't forget to update source codes) ####
-#### download the demo [here](http://catheart.xyz/files/antebellum.rar "demo").####
+#### download the demo [here](http://catheart.xyz/files/antebellum.rar "demo"). ####
 #### collaborator: [@perought](https://github.com/perought "perought") ####
 feel free to let us know about anything about the project
