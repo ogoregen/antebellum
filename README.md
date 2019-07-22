@@ -1,5 +1,7 @@
 # antebellum
-a simple rts game, currently under developement
+a simple rts game currently under developement
+
+![alt text](http://catheart.xyz/antebellum.png "antebellum")
 ## features: ##
 * procedurally generated map
 * placeable buildings
