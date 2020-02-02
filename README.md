@@ -1,7 +1,7 @@
 # antebellum
 a simple rts game currently under developement
 
-![alt text](http://catheart.xyz/antebellum.png "antebellum")
+![alt text](https://github.com/perought/maze-game/blob/master/test/fly.png?raw=true "antebellum")
 ## features: ##
 * procedurally generated map
 * placeable buildings
