@@ -15,7 +15,3 @@ a simple rts game currently under developement
 * [LIBRG](https://github.com/librg/librg "librg")
 
 # #
-
-#### download the demo [here](http://catheart.xyz/files/antebellum.rar "demo"). ####
-#### collaborator: [@perought](https://github.com/perought "perought") ####
-feel free to let us know about anything about the project
