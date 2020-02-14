@@ -1,5 +1,4 @@
-# antebellum
-a simple rts game currently under developement
+a simple rts game prototype
 
 ## features: ##
 * procedurally generated map
