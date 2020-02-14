@@ -3,7 +3,7 @@ a simple rts game prototype
 
 ## features: ##
 * procedurally generated map
-* placeable buildings
+* placable buildings
 * multiplayer
 
 ## dependencies: ##
