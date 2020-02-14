@@ -9,8 +9,8 @@ a simple rts game prototype
 ## dependencies: ##
 * [GLFW](https://www.glfw.org "GLFW")
 * [GLEW](http://glew.sourceforge.net "GLEW")
+* [GLM](https://github.com/g-truc/glm "glm")
+* [LIBRG](https://github.com/librg/librg "librg")
+* [FreeType](https://www.freetype.org/ "freetype")
 * [stb_image](https://github.com/nothings/stb/blob/master/stb_image.h "stb_image")
 * [stb_perlin](https://github.com/nothings/stb/blob/master/stb_perlin.h "stb_perlin")
-* [glm](https://github.com/g-truc/glm "glm")
-* [FreeType](https://www.freetype.org/ "freetype")
-* [LIBRG](https://github.com/librg/librg "librg")
