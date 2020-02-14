@@ -1,9 +1,11 @@
 a simple rts game prototype
+<p align="center"><img src="https://flighty.xyz/files/antebellum.png" alt="planets" width="60%"></p>
 
 ## features: ##
 * procedurally generated map
 * placeable buildings
 * multiplayer
+
 ## dependencies: ##
 * [GLFW](https://www.glfw.org "GLFW")
 * [GLEW](http://glew.sourceforge.net "GLEW")
@@ -12,5 +14,3 @@ a simple rts game prototype
 * [glm](https://github.com/g-truc/glm "glm")
 * [FreeType](https://www.freetype.org/ "freetype")
 * [LIBRG](https://github.com/librg/librg "librg")
-
-# #
