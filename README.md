@@ -1,5 +1,5 @@
 a simple rts game prototype
-<p align="center"><img src="https://flighty.xyz/files/antebellum.png" alt="antebellum" width="60%"></p>
+<p align="center"><img src="https://flighty.xyz/files/an" alt="antebellum" width="60%"></p>
 
 ## features: ##
 * procedurally generated map
